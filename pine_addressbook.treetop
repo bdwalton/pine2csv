@@ -1,0 +1,69 @@
+grammar PineAddressbook
+        rule addressbook
+             addressentry eof
+        end
+
+        rule addressentry
+             nick fieldsep pinename fieldsep recipient (fieldsep fcc fieldsep entrycomment)?
+        end
+
+	rule fieldsep
+	     "\t"
+	end
+
+	rule nick
+	     (!fieldsep .)*
+	end
+
+	rule pinename
+	     qpname / bpname
+	end
+
+	rule recipient
+	     emailaddress
+	end
+
+	rule fcc
+	     (!fieldsep .)*
+	end
+
+	rule entrycomment
+	     (!eol .)*
+	end
+
+	rule emailaddress
+	     (![@] .)+ [@] (![\t] .)+
+	end
+
+	rule qpname
+	     sqpname / dqpname
+	end
+
+	rule bpname
+	     (!fieldsep .)*
+	end
+
+	rule sqpname
+	     sq (!sq . / sq sq)* sq
+	end
+
+	rule dqpname
+	     dq (!dq . / dq dq)* dq
+	end
+
+	rule dq
+	     ["]
+	end
+
+	rule sq
+	     [']
+	end
+
+	rule eol
+	     "\n"
+	end
+
+	rule eof
+	     !.
+	end
+end
