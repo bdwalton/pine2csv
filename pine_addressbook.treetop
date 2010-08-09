@@ -32,7 +32,7 @@ grammar PineAddressbook
 	end
 
 	rule fcc
-	     (!fieldsep .)+
+	     (!fieldsep !eol .)+
 	end
 
 	rule entrycomment
@@ -40,7 +40,7 @@ grammar PineAddressbook
 	end
 
 	rule emailaddress
-	     (![@] .)+ [@] (![\t] .)+
+	     (![@] .)+ [@] (![\t>] !eol .)+
 	end
 
 	rule qpname
