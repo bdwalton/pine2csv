@@ -24,11 +24,11 @@ grammar PineAddressbook
 	end
 
 	rule fcc
-	     (!fieldsep .)*
+	     (!fieldsep .)+
 	end
 
 	rule entrycomment
-	     (!eol .)*
+	     (!eol .)+
 	end
 
 	rule emailaddress
