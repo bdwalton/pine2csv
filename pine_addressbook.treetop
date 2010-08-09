@@ -12,7 +12,11 @@ grammar PineAddressbook
 	end
 
 	rule continuation
-	     eol "    "
+	     eol padding
+	end
+
+	rule padding
+	     "    "
 	end
 
 	rule nick
