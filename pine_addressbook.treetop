@@ -8,7 +8,11 @@ grammar PineAddressbook
         end
 
 	rule fieldsep
-	     "\t"
+	     continuation? "\t" continuation?
+	end
+
+	rule continuation
+	     eol "    "
 	end
 
 	rule nick
