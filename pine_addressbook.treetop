@@ -44,7 +44,7 @@ grammar PineAddressbook
 	end
 
 	rule emailaddress
-	     (![@] .)+ [@] (![\t>] !eol .)+
+	     (![@<] .)+ [@] (![\t>] !eol .)+
 	end
 
 	rule qpname
