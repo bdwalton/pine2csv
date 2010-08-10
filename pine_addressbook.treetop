@@ -32,7 +32,23 @@ grammar PineAddressbook
 	end
 
 	rule recipient
-	     emailaddress
+	     person
+	end
+
+	rule person
+	     recipname [\s]+ '<' emailaddress '>' / emailaddress
+	end
+
+	rule recipname
+	     dqrname / sqrname
+	end
+
+	rule dqrname
+	     dq (!dq . / dq dq)* dq
+	end
+
+	rule sqrname
+	     sq (!sq . / sq sq)* sq
 	end
 
 	rule fcc
