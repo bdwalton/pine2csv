@@ -1,7 +1,11 @@
 grammar PineAddressbook
         rule addressbook
-             addressentry eof
+             entrylist eol? eof
         end
+
+	rule entrylist
+	     addressentry (eol entrylist)?
+	end
 
         rule addressentry
              nick fieldsep pinename fieldsep recipient (fieldsep fcc (fieldsep entrycomment)?)?
