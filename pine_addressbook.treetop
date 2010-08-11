@@ -32,7 +32,19 @@ grammar PineAddressbook
 	end
 
 	rule recipient
-	     person
+	     personlist / person
+	end
+
+	rule personlist
+	     lstart person lend
+	end
+
+	rule lstart
+	     '('
+	end
+
+	rule lend
+	     ')'
 	end
 
 	rule person
@@ -60,7 +72,7 @@ grammar PineAddressbook
 	end
 
 	rule emailaddress
-	     (![@<] .)+ [@] (![\t>] !eol .)+
+	     (![@<] !lstart .)+ [@] (![\t>] !lend !eol .)+
 	end
 
 	rule qpname
