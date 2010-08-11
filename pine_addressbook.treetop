@@ -20,7 +20,7 @@ grammar PineAddressbook
 	end
 
 	rule padding
-	     "    "
+	     "   "
 	end
 
 	rule nick
