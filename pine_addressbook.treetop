@@ -36,7 +36,7 @@ grammar PineAddressbook
 	end
 
 	rule personlist
-	     lstart person (plistsep person)* lend
+	     lstart continuation? person (plistsep person)* continuation? lend
 	end
 
 	rule lstart
