@@ -36,7 +36,7 @@ grammar PineAddressbook
 	end
 
 	rule personlist
-	     lstart person lend
+	     lstart person (plistsep person)* lend
 	end
 
 	rule lstart
@@ -49,6 +49,10 @@ grammar PineAddressbook
 
 	rule person
 	     recipname [\s]+ '<' emailaddress '>' / emailaddress
+	end
+
+	rule plistsep
+	     continuation? [\s]* [,] [\s]* continuation?
 	end
 
 	rule recipname
