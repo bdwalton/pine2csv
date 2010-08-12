@@ -8,8 +8,12 @@ grammar PineAddressbook
 	end
 
         rule addressentry
-             nick fieldsep pinename fieldsep recipient (fieldsep fcc (fieldsep entrycomment)?)?
+             nick fieldsep pinename fieldsep recipient optionals?
         end
+
+	rule optionals
+	     fieldsep fcc (fieldsep entrycomment)?
+	end
 
 	rule fieldsep
 	     continuation? "\t" continuation?
