@@ -80,7 +80,7 @@ grammar PineAddressbook
 	end
 
 	rule entrycomment
-	     .* &eol
+	     (!eol .)*
 	end
 
 	rule emailaddress
