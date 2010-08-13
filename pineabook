@@ -1,0 +1,12 @@
+#!/usr/ruby-enterprise/bin/ruby
+
+require 'rubygems'
+require 'treetop'
+require 'polyglot'
+require 'pine_addressbook'
+
+parser = PineAddressbookParser.new
+
+tree = parser.parse(File.read('abook-maust'))
+p tree.nil? ? parser.failure_reason : tree
+
