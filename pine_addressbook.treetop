@@ -1,14 +1,10 @@
 grammar PineAddressbook
         rule addressbook
-             entrylist eol? eof
+             addressentry addressentry* eof
         end
 
-	rule entrylist
-	     addressentry (eol entrylist)?
-	end
-
         rule addressentry
-             nick fieldsep pinename fieldsep recipient optionals?
+             nick fieldsep pinename fieldsep recipient optionals? eol
         end
 
 	rule optionals
