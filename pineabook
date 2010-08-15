@@ -7,6 +7,11 @@ require 'pine_addressbook'
 
 parser = PineAddressbookParser.new
 
-tree = parser.parse(File.read('abook-maust'))
-p tree.nil? ? parser.failure_reason : tree
+tree = parser.parse(File.read('abook-test'))
+
+if tree.nil?
+  $stderr.puts parser.failure_reason
+else
+  puts tree.to_csv
+end
 
