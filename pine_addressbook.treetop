@@ -1,10 +1,14 @@
 grammar PineAddressbook
         rule addressbook
-             addressentry addressentry* eof
+             car:addressentry cdr:addressentry* eof {
+	     def to_csv; car.to_csv; end
+	     }
         end
 
         rule addressentry
-             nick fieldsep pinename fieldsep recipient optionals? eol
+             nick fieldsep pinename fieldsep recipient optionals? eol {
+	     def to_csv; nick.to_s; end
+	     }
         end
 
 	rule optionals
@@ -24,7 +28,9 @@ grammar PineAddressbook
 	end
 
 	rule nick
-	     (!fieldsep .)*
+	     (!fieldsep .)* {
+	     def to_s; text_value; end
+	     }
 	end
 
 	rule pinename
