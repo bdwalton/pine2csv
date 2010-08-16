@@ -66,15 +66,21 @@ grammar PineAddressbook
 	end
 
 	rule dqrname
-	     dq (!dq . / dq dq)* dq
+	     dq n:(!dq !eol . / dq dq)* dq {
+	     def to_s; n.text_value; end
+	     }
 	end
 
 	rule sqrname
-	     sq (!sq . / sq sq)* sq
+	     sq (!sq !eol . / sq sq)* sq {
+	     def to_s; n.text_value; end
+	     }
 	end
 
 	rule brname
-	     (!' <' .)+
+	     (!' <' !eol .)+ {
+	     def to_s; text_value; end
+	     }
 	end
 
 	rule fcc
@@ -86,7 +92,7 @@ grammar PineAddressbook
 	end
 
 	rule emailaddress
-	     (![@<] !lstart .)+ [@] (![\t>] !'>' !',' !lend !eol .)+
+	     (![@] [a-zA-Z0-9.-])+ [@] (![\t>,\)\n] .)+
 	end
 
 	rule qpname
