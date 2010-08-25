@@ -1,13 +1,22 @@
 grammar PineAddressbook
         rule addressbook
              car:addressentry cdr:addressentry* eof {
-	     def to_csv; car.to_csv; end
+	     def to_csv
+	     	 car.to_csv + "\n" + '-' * 50 + "\n" +
+		 cdr.elements.map do |ae|
+		 ae.to_csv
+		 end.join("\n" + '-' * 50 + "\n")
+	     end
 	     }
         end
 
         rule addressentry
              nick fieldsep pinename fieldsep recipient optionals? eol {
-	     def to_csv; nick.to_s; end
+	     def to_csv	   
+	     [:nick, :pinename, :recipient].map do |token|
+	     	     self.send(token).to_s
+	     end.join(', ')
+	     end
 	     }
         end
 
@@ -42,7 +51,14 @@ grammar PineAddressbook
 	end
 
 	rule personlist
-	     lstart continuation? person (plistsep person)* continuation? lend
+	     lstart continuation? car:person cdr:(plistsep person)* continuation? lend {
+	     	    def to_s
+		    	['group', car.to_s, cdr.elements.map do |p|
+			   p.person.to_s
+			end.flatten].join(', ')
+		    end
+	     }
+
 	end
 
 	rule lstart
@@ -54,8 +70,17 @@ grammar PineAddressbook
 	end
 
 	rule person
-	     recipname [\s]+ '<' emailaddress '>' / emailaddress
+	     qualified_address / emailaddress
 	end
+
+	rule qualified_address
+	     recipname [\s]+ '<' emailaddress '>' {
+	     def to_s
+	     	 "\"#{recipname.to_s}\" <#{emailaddress.to_s}>"
+	     end
+	     }
+	end
+
 
 	rule plistsep
 	     continuation? [\s]* [,] [\s]* continuation?
@@ -92,7 +117,11 @@ grammar PineAddressbook
 	end
 
 	rule emailaddress
-	     (![@] [a-zA-Z0-9.-])+ [@] (![\t>,\)\n] .)+
+	     (![@] [a-zA-Z0-9.-])+ [@] (![\t>,\)\n] .)+ {
+	     def to_s
+	     	 text_value
+	     end
+	     }
 	end
 
 	rule qpname
@@ -100,15 +129,21 @@ grammar PineAddressbook
 	end
 
 	rule bpname
-	     (!fieldsep .)*
+	     (!fieldsep .)* {
+	     def to_s; text_value; end
+	     }
 	end
 
 	rule sqpname
-	     sq (!sq . / sq sq)* sq
+	     sq n:(!sq . / sq sq)* sq {
+	     def to_s; n.text_value; end
+	     }
 	end
 
 	rule dqpname
-	     dq (!dq . / dq dq)* dq
+	     dq n:(!dq . / dq dq)* dq {
+	     def to_s; n.text_value; end
+	     }
 	end
 
 	rule dq
