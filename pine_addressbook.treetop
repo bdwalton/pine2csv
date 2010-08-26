@@ -55,9 +55,9 @@ grammar PineAddressbook
 	rule personlist
 	     lstart continuation? car:person cdr:(plistsep person)* continuation? lend {
 	     	    def value
-		    	['group', car.to_s, cdr.elements.map do |p|
-			   p.person.to_s
-			end.flatten].join(', ')
+		    	['group', car.value[1], cdr.elements.map do |p|
+			   p.person.value[1]
+			end.flatten]
 		    end
 	     }
 
@@ -78,7 +78,7 @@ grammar PineAddressbook
 	rule qualified_address
 	     recipname [\s]+ '<' emailaddress '>' {
 	     def value
-	     	 "\"#{recipname.to_s}\" <#{emailaddress.to_s}>"
+	     	 ['person', "\"#{recipname.value}\" <#{emailaddress.text_value}>"]
 	     end
 	     }
 	end
@@ -121,7 +121,7 @@ grammar PineAddressbook
 	rule emailaddress
 	     (![@] [a-zA-Z0-9.-])+ [@] (![\t>,\)\n] .)+ {
 	     def value
-	     	 text_value
+	     	 ['person', text_value]
 	     end
 	     }
 	end
