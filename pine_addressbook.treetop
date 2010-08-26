@@ -2,20 +2,22 @@ grammar PineAddressbook
         rule addressbook
              car:addressentry cdr:addressentry* eof {
 	     def to_csv
-	     	 car.to_csv + "\n" + '-' * 50 + "\n" +
+	     	 car.to_csv
 		 cdr.elements.map do |ae|
 		 ae.to_csv
-		 end.join("\n" + '-' * 50 + "\n")
+		 end
 	     end
 	     }
         end
 
         rule addressentry
              nick fieldsep pinename fieldsep recipient optionals? eol {
+	     require 'csv'
 	     def to_csv	   
-	     [:nick, :pinename, :recipient].map do |token|
-	     	     self.send(token).to_s
-	     end.join(', ')
+	     	 values = [:nick, :pinename, :recipient].map do |token|
+	     	      	      self.send(token).value
+			  end.flatten
+		 puts CSV.generate_line(values)
 	     end
 	     }
         end
