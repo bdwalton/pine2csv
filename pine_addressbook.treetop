@@ -38,7 +38,7 @@ grammar PineAddressbook
 
 	rule nick
 	     (!fieldsep .)* {
-	     def to_s; text_value; end
+	     def value; text_value; end
 	     }
 	end
 
@@ -52,7 +52,7 @@ grammar PineAddressbook
 
 	rule personlist
 	     lstart continuation? car:person cdr:(plistsep person)* continuation? lend {
-	     	    def to_s
+	     	    def value
 		    	['group', car.to_s, cdr.elements.map do |p|
 			   p.person.to_s
 			end.flatten].join(', ')
@@ -75,7 +75,7 @@ grammar PineAddressbook
 
 	rule qualified_address
 	     recipname [\s]+ '<' emailaddress '>' {
-	     def to_s
+	     def value
 	     	 "\"#{recipname.to_s}\" <#{emailaddress.to_s}>"
 	     end
 	     }
@@ -92,19 +92,19 @@ grammar PineAddressbook
 
 	rule dqrname
 	     dq n:(!dq !eol . / dq dq)* dq {
-	     def to_s; n.text_value; end
+	     def value; n.text_value; end
 	     }
 	end
 
 	rule sqrname
 	     sq (!sq !eol . / sq sq)* sq {
-	     def to_s; n.text_value; end
+	     def value; n.text_value; end
 	     }
 	end
 
 	rule brname
 	     (!' <' !eol .)+ {
-	     def to_s; text_value; end
+	     def value; text_value; end
 	     }
 	end
 
@@ -118,7 +118,7 @@ grammar PineAddressbook
 
 	rule emailaddress
 	     (![@] [a-zA-Z0-9.-])+ [@] (![\t>,\)\n] .)+ {
-	     def to_s
+	     def value
 	     	 text_value
 	     end
 	     }
@@ -130,19 +130,19 @@ grammar PineAddressbook
 
 	rule bpname
 	     (!fieldsep .)* {
-	     def to_s; text_value; end
+	     def value; text_value; end
 	     }
 	end
 
 	rule sqpname
 	     sq n:(!sq . / sq sq)* sq {
-	     def to_s; n.text_value; end
+	     def value; n.text_value; end
 	     }
 	end
 
 	rule dqpname
 	     dq n:(!dq . / dq dq)* dq {
-	     def to_s; n.text_value; end
+	     def value; n.text_value; end
 	     }
 	end
 
