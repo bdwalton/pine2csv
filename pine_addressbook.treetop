@@ -119,7 +119,7 @@ grammar PineAddressbook
 	end
 
 	rule emailaddress
-	     (![@] [a-zA-Z0-9.-])+ [@] (![\t>,\)\n] .)+ {
+	     (![@] [a-zA-Z0-9._-])+ [@] (![\t>,\)\n] .)+ {
 	     def value
 	     	 ['person', text_value]
 	     end
