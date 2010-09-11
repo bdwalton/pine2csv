@@ -1,17 +1,17 @@
 #!/usr/ruby-enterprise/bin/ruby
 
-require 'rubygems'
-require 'treetop'
-require 'polyglot'
-require 'pine_addressbook'
-
-parser = PineAddressbookParser.new
-
-tree = parser.parse(File.read('abook-test'))
-
-if tree.nil?
-  $stderr.puts parser.failure_reason
-else
-  puts tree.to_csv
+retried = false
+begin
+  require 'pine2csv'
+rescue LoadError => e
+  $:.unshift File.join(File.dirname(File.expand_path(__FILE__)), "lib")
+  if retried
+    reraise
+  else
+    retried = true
+    retry
+  end
 end
 
+p2c = Pine2CSV.new(File.expand_path(ARGV[0]))
+puts p2c.to_csv
