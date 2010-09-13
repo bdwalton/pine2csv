@@ -5,7 +5,7 @@ require 'pine_addressbook'
 
 class Pine2CSV
   def initialize(abook)
-    @abook = File.read(File.expand_path(abook))
+    @abook = abook
     @parser = PineAddressbookParser.new
   end
 
