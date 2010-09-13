@@ -15,5 +15,20 @@ rescue LoadError => e
   end
 end
 
-p2c = Pine2CSV.new(File.expand_path(ARGV[0]))
-puts p2c.to_csv
+if ARGV.size.eql?(0)
+  $stderr.puts "Usage: #{File.basename $0} /path/to/pineabook"
+  $stderr.puts
+  $stderr.puts "No address book file specified..."
+else
+  begin
+    abook = File.read(File.expand_path(ARGV[0]))
+    p2c = Pine2CSV.new(abook)
+    puts p2c.to_csv
+  rescue Errno::ENOENT => e
+    $stderr.puts "Invalid address book file (#{ARGV[0]}).  File doesn't exist."
+  rescue => e
+    $stderr.puts "Unhandled exception: #{e.class}"
+    $stderr.puts e.message
+  end
+end
+
