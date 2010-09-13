@@ -1,12 +1,14 @@
 #!/usr/ruby-enterprise/bin/ruby
 
+require 'rubygems'
+
 retried = false
 begin
   require 'pine2csv'
 rescue LoadError => e
-  $:.unshift File.join(File.dirname(File.expand_path(__FILE__)), "lib")
+  $:.unshift File.join(File.dirname(File.expand_path(__FILE__)), "..", "lib")
   if retried
-    reraise
+    raise
   else
     retried = true
     retry
