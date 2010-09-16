@@ -29,9 +29,11 @@ else
     exit 1
   rescue Errno::ENOENT => e
     $stderr.puts "Invalid address book file (#{ARGV[0]}).  File doesn't exist."
+    exit 1
   rescue => e
     $stderr.puts "Unhandled exception: #{e.class}"
     $stderr.puts e.message
+    exit 1
   end
 end
 
