@@ -11,11 +11,19 @@ class Pine2CSV
     end
   end
 
-  attr :abook, true
+  attr :abook
 
   def initialize(abook = nil)
     @abook = abook
     @parser = PineAddressbookParser.new
+  end
+
+  def abook=(data)
+    if data.kind_of?(String)
+      @abook = data
+    else
+      raise Pine2CSV::Error.new("Please pass an address book in string form")
+    end
   end
 
   def to_csv
