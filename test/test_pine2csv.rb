@@ -6,6 +6,12 @@ class TestPine2csv < Test::Unit::TestCase
       @p = Pine2CSV.new
     end
 
+    should "require abook data" do
+      assert_raise Pine2CSV::Error do
+        @p.to_csv
+      end
+    end
+
     should "take simple line" do
       @p.abook = "ben\tben walton\tbwalton@example.org\n"
       assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.org>\n"
