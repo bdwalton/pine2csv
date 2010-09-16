@@ -4,8 +4,10 @@ require 'polyglot'
 require 'pine_addressbook'
 
 class Pine2CSV
-  def initialize(abook)
-    @abook = abook
+  attr :abook, true
+
+  def initialize(abook = nil)
+    @abook = abook if abook
     @parser = PineAddressbookParser.new
   end
 
