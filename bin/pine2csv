@@ -24,6 +24,9 @@ else
     abook = File.read(File.expand_path(ARGV[0]))
     p2c = Pine2CSV.new(abook)
     puts p2c.to_csv
+  rescue Pine2CSV::Error => e
+    $stderr.puts e.message
+    exit 1
   rescue Errno::ENOENT => e
     $stderr.puts "Invalid address book file (#{ARGV[0]}).  File doesn't exist."
   rescue => e
