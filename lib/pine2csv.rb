@@ -29,10 +29,9 @@ class Pine2CSV
   def to_csv
     raise Pine2CSV::Error.new("No address book data supplied.") unless abook
     tree = @parser.parse(@abook)
-    if tree.nil?
-      $stderr.puts @parser.failure_reason
-    else
-      tree.to_csv
-    end
+
+    raise Pine2CSV::Error.new("Parse failure:\n#{@parser.failure_reason}") unless tree
+
+    tree.to_csv
   end
 end
