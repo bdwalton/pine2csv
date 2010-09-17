@@ -40,5 +40,25 @@ class TestPine2csv < Test::Unit::TestCase
       end
     end
 
+    should "allow an fcc without a comment" do
+      @p.abook = "ben\tben walton\tbwalton@example.org\tfcc\n"
+      assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.org>\n"
+    end
+
+    should "allow all 5 possible fields" do
+      @p.abook = "ben\tben walton\tbwalton@example.org\tfcc\tcomment text\n"
+      assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.org>\n"
+    end
+
+    should "allow double quoted name" do
+      @p.abook = "ben\t\"ben walton\"\tbwalton@example.org\tfcc\tcomment text\n"
+      assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.org>\n"
+    end
+
+    should "allow single quoted name" do
+      @p.abook = "ben\t'ben walton'\tbwalton@example.org\tfcc\tcomment text\n"
+      assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.org>\n"
+    end
+
   end
 end
