@@ -111,7 +111,7 @@ grammar PineAddressbook
 	end
 
 	rule fcc
-	     (!fieldsep .)*
+	     (!fieldsep !eol .)*
 	end
 
 	rule entrycomment
