@@ -132,19 +132,19 @@ grammar PineAddressbook
 
 	rule bpname
 	     (!fieldsep .)* {
-	     def value; text_value; end
+	     def value; text_value.squeeze("'").squeeze("\""); end
 	     }
 	end
 
 	rule sqpname
 	     sq n:(!sq . / sq sq)* sq {
-	     def value; n.text_value; end
+	     def value; n.text_value.squeeze("'").squeeze("\""); end
 	     }
 	end
 
 	rule dqpname
 	     dq n:(!dq . / dq dq)* dq {
-	     def value; n.text_value; end
+	     def value; n.text_value.squeeze("'").squeeze("\""); end
 	     }
 	end
 
