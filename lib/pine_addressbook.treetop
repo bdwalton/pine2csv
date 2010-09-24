@@ -99,7 +99,7 @@ grammar PineAddressbook
 	end
 
 	rule sqrname
-	     sq (!sq !eol . / sq sq)* sq {
+	     sq n:(!sq !eol . / sq sq)* sq {
 	     def value; n.text_value; end
 	     }
 	end
