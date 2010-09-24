@@ -94,19 +94,19 @@ grammar PineAddressbook
 
 	rule dqrname
 	     dq n:(!dq !eol . / dq dq)* dq {
-	     def value; n.text_value; end
+	     def value; n.text_value.squeeze("'").squeeze("\""); end
 	     }
 	end
 
 	rule sqrname
 	     sq n:(!sq !eol . / sq sq)* sq {
-	     def value; n.text_value; end
+	     def value; n.text_value.squeeze("'").squeeze("\""); end
 	     }
 	end
 
 	rule brname
 	     (!' <' !eol .)+ {
-	     def value; text_value; end
+	     def value; text_value.squeeze("'").squeeze("\""); end
 	     }
 	end
 
