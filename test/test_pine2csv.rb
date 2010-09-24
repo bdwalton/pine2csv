@@ -96,5 +96,15 @@ class TestPine2csv < Test::Unit::TestCase
       @p.abook = "ben\tben\t'Ben \"quoted\" Walton' <bwalton@example.org>\n"
       assert_equal @p.to_csv, "ben,ben,person,\"Ben \"\"quoted\"\" Walton <bwalton@example.org>\"\n"
     end
+
+    should "allow recipient with single quoted name with embedded quote" do
+      @p.abook = "ben\tben\t'Ben O''Walton' <bwalton@example.org>\n"
+      assert_equal @p.to_csv, "ben,ben,person,Ben O'Walton <bwalton@example.org>\n"
+    end
+
+    should "allow recipient with double quoted name with embedded double quote" do
+      @p.abook = "ben\tben\t\"Ben \"\"quoted\"\" Walton\" <bwalton@example.org>\n"
+      assert_equal @p.to_csv, "ben,ben,person,\"Ben \"\"quoted\"\" Walton <bwalton@example.org>\"\n"
+    end
   end
 end
