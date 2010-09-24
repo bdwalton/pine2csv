@@ -78,7 +78,7 @@ grammar PineAddressbook
 	rule qualified_address
 	     recipname [\s]+ '<' emailaddress '>' {
 	     def value
-	     	 ['person', "\"#{recipname.value}\" #{emailaddress.value}"]
+	     	 ['person', "#{recipname.value} #{emailaddress.value[1]}"]
 	     end
 	     }
 	end
