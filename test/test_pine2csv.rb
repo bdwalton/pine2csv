@@ -1,7 +1,7 @@
 require 'helper'
 
 class TestPine2csv < Test::Unit::TestCase
-  context "Accept valid single lines" do
+  context "Require valid data" do
     setup do
       @p = Pine2CSV.new
     end
@@ -16,6 +16,12 @@ class TestPine2csv < Test::Unit::TestCase
       assert_raise Pine2CSV::Error do
         @p.abook = @p
       end
+    end
+  end
+
+  context "Accept valid single lines" do
+    setup do
+      @p = Pine2CSV.new
     end
 
     should "take simple line" do
