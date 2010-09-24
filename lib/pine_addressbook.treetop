@@ -2,10 +2,10 @@ grammar PineAddressbook
         rule addressbook
              car:addressentry cdr:addressentry* eof {
 	     def to_csv
-		 csv = car.to_csv + "\n"
+		 csv = car.to_csv
 		 csv += cdr.elements.map do |ae|
 		 ae.to_csv
-		 end.join("\n")
+		 end.join('')
 	     end
 	     }
         end
@@ -17,7 +17,7 @@ grammar PineAddressbook
 	     	 values = [:nick, :pinename, :recipient].map do |token|
 	     	      	      self.send(token).value
 			  end.flatten
-		 CSV.generate_line(values)
+		 CSV.generate_line(values) + "\n"
 	     end
 	     }
         end
