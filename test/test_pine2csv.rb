@@ -107,4 +107,15 @@ class TestPine2csv < Test::Unit::TestCase
       assert_equal @p.to_csv, "ben,ben,person,\"Ben \"\"quoted\"\" Walton <bwalton@example.org>\"\n"
     end
   end
+
+  context "Accept multiple lines" do
+    setup do
+      @p = Pine2CSV.new
+    end
+
+    should "allow multiple lines" do
+      @p.abook = "ben\tben walton\tbwalton@example.org\nben\tben walton\tbwalton@example.org\n"
+      assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.org>\nben,ben walton,person,<bwalton@example.org>\n"
+    end
+  end
 end
