@@ -157,14 +157,17 @@ class TestPine2csv < Test::Unit::TestCase
     end
 
     should "allow multiple continuations" do
-      @p.abook = "ben\t\n   ben walton\tbwalton@example.com\tfcc\t\n   comment\n"
-      assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.com>\n"
-      @p.abook = "ben\tben walton\t\n   bwalton@example.com\tfcc\t\n   comment\n"
-      assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.com>\n"
-      @p.abook = "ben\tben walton\t\n   bwalton@example.com\t\n   fcc\t\n   comment\n"
-      assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.com>\n"
+      [ "ben\t\n   ben walton\tbwalton@example.com\tfcc\t\n   comment\n",
+        "ben\tben walton\t\n   bwalton@example.com\tfcc\t\n   comment\n",
+        "ben\tben walton\t\n   bwalton@example.com\t\n   fcc\t\n   comment\n"
+      ].each do |continued_line|
+        @p.abook = continued_line
+        assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.com>\n"
+      end
     end
   end
+
+
 
   context "Reject invalid entries" do
     setup do
