@@ -106,6 +106,36 @@ class TestPine2csv < Test::Unit::TestCase
       @p.abook = "ben\tben\t\"Ben \"\"quoted\"\" Walton\" <bwalton@example.org>\n"
       assert_equal @p.to_csv, "ben,ben,person,\"Ben \"\"quoted\"\" Walton <bwalton@example.org>\"\n"
     end
+
+    should "allow simple group" do
+      @p.abook = "bens\tthe bens\t(ben1@example.com,ben2@example.com)\n"
+      assert_equal @p.to_csv, "bens,the bens,group,<ben1@example.com>,<ben2@example.com>\n"
+    end
+
+    should "allow group with single quoted names" do
+      @p.abook = "bens\tthe bens\t('ben1' <ben1@example.com>, 'ben2' <ben2@example.com>)\n"
+      assert_equal @p.to_csv, "bens,the bens,group,ben1 <ben1@example.com>,ben2 <ben2@example.com>\n"
+    end
+
+    should "allow group with double quoted names" do
+      @p.abook = "bens\tthe bens\t(\"ben1\" <ben1@example.com>, \"ben2\" <ben2@example.com>)\n"
+      assert_equal @p.to_csv, "bens,the bens,group,ben1 <ben1@example.com>,ben2 <ben2@example.com>\n"
+    end
+
+    should "allow group with double quoted names containing double quotes" do
+      @p.abook = "bens\tthe bens\t(\"ben1\" <ben1@example.com>, \"ben2 o\"\"walton\" <ben2@example.com>)\n"
+      assert_equal @p.to_csv, "bens,the bens,group,ben1 <ben1@example.com>,\"ben2 o\"\"walton <ben2@example.com>\"\n"
+    end
+
+    should "allow group with double quoted names containing single quotes" do
+      @p.abook = "bens\tthe bens\t(\"ben1\" <ben1@example.com>, \"ben2 o'walton\" <ben2@example.com>)\n"
+      assert_equal @p.to_csv, "bens,the bens,group,ben1 <ben1@example.com>,ben2 o'walton <ben2@example.com>\n"
+    end
+
+    should "allow group with quoted names containing single quotes" do
+      @p.abook = "bens\tthe bens\t(\"ben1\" <ben1@example.com>, 'ben2 o''walton' <ben2@example.com>)\n"
+      assert_equal @p.to_csv, "bens,the bens,group,ben1 <ben1@example.com>,ben2 o'walton <ben2@example.com>\n"
+    end
   end
 
   context "Accept multiple lines" do
