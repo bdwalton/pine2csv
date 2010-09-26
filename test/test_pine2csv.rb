@@ -19,7 +19,7 @@ class TestPine2csv < Test::Unit::TestCase
     end
   end
 
-  context "Accept valid single lines" do
+  context "Accept valid single entries" do
     setup do
       @p = Pine2CSV.new
     end
@@ -166,6 +166,37 @@ class TestPine2csv < Test::Unit::TestCase
       assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.com>\n"
     end
   end
+
+  context "Reject invalid entries" do
+    setup do
+      @p = Pine2CSV.new
+    end
+
+    should "reject missing recipient" do
+      @p.abook = "ben\tben walton\t\tfcc\tcomment\n"
+      assert_raise Pine2CSV::Error do
+        @p.to_csv
+      end
+    end
+
+    should "reject non-escaped quotes in name field" do
+      [
+       "ben\t'ben o'walton'\tbwalton@example.org\n",
+       "ben\t\"ben \"bad quote\" walton\"\tbwalton@example.org\n"
+      ].each do |bad|
+        @p.abook = bad
+        assert_raise Pine2CSV::Error do
+          @p.to_csv
+        end
+      end
+    end
+
+    should "reject missing angle quote on email" do
+      @p.abook = "ben\tben walton\t<bwalton@example.com\n"
+      assert_raise Pine2CSV::Error do
+        @p.to_csv
+      end
+    end
   end
 
   context "Accept multiple lines" do
