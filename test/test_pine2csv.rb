@@ -39,11 +39,6 @@ class TestPine2csv < Test::Unit::TestCase
       assert_equal @p.to_csv, "ben,\"\",person,<bwalton@example.org>\n"
     end
 
-    should "not allow blank recipient" do
-      @p.abook = "ben\tben walton\t\n"
-      assert_raise Pine2CSV::Error do
-        @p.to_csv
-      end
     end
 
     should "allow an fcc without a comment" do
@@ -173,9 +168,13 @@ class TestPine2csv < Test::Unit::TestCase
     end
 
     should "reject missing recipient" do
-      @p.abook = "ben\tben walton\t\tfcc\tcomment\n"
-      assert_raise Pine2CSV::Error do
-        @p.to_csv
+      [ "ben\tben walton\t\tfcc\tcomment\n",
+         "ben\tben walton\t\n"
+      ].each do |missing_recip|
+        @p.abook = missing_recip
+        assert_raise Pine2CSV::Error do
+          @p.to_csv
+        end
       end
     end
 
