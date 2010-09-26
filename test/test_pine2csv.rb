@@ -195,9 +195,13 @@ class TestPine2csv < Test::Unit::TestCase
     end
 
     should "reject missing angle quote on email" do
-      @p.abook = "ben\tben walton\t<bwalton@example.com\n"
-      assert_raise Pine2CSV::Error do
-        @p.to_csv
+      [ "ben\tben walton\t<bwalton@example.com\n",
+        "ben\tben walton\tbwalton@example.com>\n"
+      ].each do |missing_bracket|
+        @p.abook = missing_bracket
+        assert_raise Pine2CSV::Error do
+          @p.to_csv
+        end
       end
     end
   end
