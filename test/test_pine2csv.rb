@@ -175,6 +175,11 @@ class TestPine2csv < Test::Unit::TestCase
         assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.com>\n"
       end
     end
+
+    should "allow continuations in a group list" do
+      @p.abook = "bens\tthe bens\t(\n   ben1@example.com,\n   ben2@example.com,\n   ben3@example.com)\n"
+      assert_equal @p.to_csv, "bens,the bens,group,<ben1@example.com>,<ben2@example.com>,<ben3@example.com>\n"
+    end
   end
 
 
