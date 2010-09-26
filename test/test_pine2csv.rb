@@ -136,6 +136,36 @@ class TestPine2csv < Test::Unit::TestCase
       @p.abook = "bens\tthe bens\t(\"ben1\" <ben1@example.com>, 'ben2 o''walton' <ben2@example.com>)\n"
       assert_equal @p.to_csv, "bens,the bens,group,ben1 <ben1@example.com>,ben2 o'walton <ben2@example.com>\n"
     end
+
+    should "allow continuation after nickname" do
+      @p.abook = "ben\t\n   ben walton\tbwalton@example.com\n"
+      assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.com>\n"
+    end
+
+    should "allow continuation after name" do
+      @p.abook = "ben\tben walton\t\n   bwalton@example.com\n"
+      assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.com>\n"
+    end
+
+    should "allow continuation after email (with fcc)" do
+      @p.abook = "ben\tben walton\tbwalton@example.com\t\n   fcc\n"
+      assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.com>\n"
+    end
+
+    should "allow continuation after fcc (with comment)" do
+      @p.abook = "ben\tben walton\tbwalton@example.com\tfcc\t\n   comment\n"
+      assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.com>\n"
+    end
+
+    should "allow multiple continuations" do
+      @p.abook = "ben\t\n   ben walton\tbwalton@example.com\tfcc\t\n   comment\n"
+      assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.com>\n"
+      @p.abook = "ben\tben walton\t\n   bwalton@example.com\tfcc\t\n   comment\n"
+      assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.com>\n"
+      @p.abook = "ben\tben walton\t\n   bwalton@example.com\t\n   fcc\t\n   comment\n"
+      assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.com>\n"
+    end
+  end
   end
 
   context "Accept multiple lines" do
