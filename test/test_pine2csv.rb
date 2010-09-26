@@ -319,6 +319,13 @@ class TestPine2csv < Test::Unit::TestCase
         @p.to_csv
       end
     end
+
+    should "reject a bad group entry mixed in valid entries" do
+      @p.abook = "ben\tben\tbwalton@example.org\nbens\tthe bens\t(ben1@example.org,ben2@example.org\nben2\tben2\t<ben2@example.org>\n"
+      assert_raise Pine2CSV::Error do
+        @p.to_csv
+      end
+    end
   end
 
   context "Accept multiple lines" do
