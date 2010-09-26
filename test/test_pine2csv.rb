@@ -189,6 +189,24 @@ class TestPine2csv < Test::Unit::TestCase
       @p = Pine2CSV.new
     end
 
+    should "reject entry with no newline" do
+      [ "ben\tben\tbwalton@example.org",
+        "ben1\tben1\tben1@example.org\nben2\tben2\tben2@example.org"
+      ].each do |missing_eol|
+        @p.abook = missing_eol
+        assert_raise Pine2CSV::Error do
+          @p.to_csv
+        end
+      end
+    end
+
+    should "reject abook with extra newline" do
+      @p.abook = "ben\tben\tbwalton@example.org\n\n"
+      assert_raise Pine2CSV::Error do
+        @p.to_csv
+      end
+    end
+
     should "reject missing recipient" do
       [ "ben\tben walton\t\tfcc\tcomment\n",
         "ben\tben walton\t\n",
