@@ -201,6 +201,15 @@ class TestPine2csv < Test::Unit::TestCase
       assert_equal @p.to_csv, "bens,the bens,group,<bwalton@example.org>,<ben2@example.org>\n"
     end
 
+    should "allow tab after continuation" do
+      [ "ben\n   \tben walton\tbwalton@example.org\n",
+        "ben\tben walton\n   \tbwalton@example.org\n",
+        "ben\n   \tben walton\n   \tbwalton@example.org\n"
+      ].each do |odd_continuation|
+        @p.abook = odd_continuation
+        assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.org>\n"
+      end
+    end
   end
 
 
