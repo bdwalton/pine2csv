@@ -76,7 +76,7 @@ grammar PineAddressbook
 	end
 
 	rule qualified_address
-	     recipname [\s]+ '<' emailaddress '>' {
+	     recipname [\s]+ emailaddress {
 	     def value
 	     	 ['person', "#{recipname.value} #{emailaddress.value[1]}"]
 	     end
@@ -119,6 +119,18 @@ grammar PineAddressbook
 	end
 
 	rule emailaddress
+	     bracketedaddress / bareaddress
+	end
+
+	rule bracketedaddress
+	     '<' bareaddress '>' {
+	     def value
+		 bareaddress.value
+	     end
+	     }
+	end
+
+	rule bareaddress
 	     (![@] [a-zA-Z0-9._-])+ [@] (![\t>,\)\n] .)+ {
 	     def value
 	     	 ['person', "<#{text_value}>"]
