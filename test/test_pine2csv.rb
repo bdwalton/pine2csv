@@ -173,7 +173,8 @@ class TestPine2csv < Test::Unit::TestCase
 
     should "reject missing recipient" do
       [ "ben\tben walton\t\tfcc\tcomment\n",
-         "ben\tben walton\t\n"
+        "ben\tben walton\t\n",
+        "ben\tben walton\n"
       ].each do |missing_recip|
         @p.abook = missing_recip
         assert_raise Pine2CSV::Error do
