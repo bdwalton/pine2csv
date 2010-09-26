@@ -230,6 +230,13 @@ class TestPine2csv < Test::Unit::TestCase
       end
     end
 
+    should "reject named recipient when address not bracketed" do
+      @p.abook = "ben\tben\t'ben' bwalton@example.com\n"
+      assert_raise Pine2CSV::Error do
+        @p.to_csv
+      end
+    end
+
     should "reject non-escaped quotes in name field" do
       [
        "ben\t'ben o'walton'\tbwalton@example.org\n",
