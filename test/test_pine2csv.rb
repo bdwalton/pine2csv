@@ -282,5 +282,13 @@ class TestPine2csv < Test::Unit::TestCase
       @p.abook = "ben\tben walton\tbwalton@example.org\nben\tben walton\tbwalton@example.org\n"
       assert_equal @p.to_csv, "ben,ben walton,person,<bwalton@example.org>\nben,ben walton,person,<bwalton@example.org>\n"
     end
+
+    should "allow mixed group with single recipient lines" do
+      @p.abook = "ben\tben\tbwalton@example.org\nbens\tthe bens\t(ben1@example.org,ben2@example.org)\n"
+      assert_equal @p.to_csv, "ben,ben,person,<bwalton@example.org>\nbens,the bens,group,<ben1@example.org>,<ben2@example.org>\n"
+
+      @p.abook = "bens\tthe bens\t(ben1@example.org,ben2@example.org)\nben\tben\tbwalton@example.org\n"
+      assert_equal @p.to_csv, "bens,the bens,group,<ben1@example.org>,<ben2@example.org>\nben,ben,person,<bwalton@example.org>\n"
+    end
   end
 end
