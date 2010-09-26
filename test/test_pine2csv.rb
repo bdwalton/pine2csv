@@ -111,6 +111,16 @@ class TestPine2csv < Test::Unit::TestCase
       assert_equal @p.to_csv, "bens,the bens,group,<ben1@example.com>,<ben2@example.com>\n"
     end
 
+    should "allow group with only one member" do
+      @p.abook = "bens\tthe bens\t(ben1@example.com)\n"
+      assert_equal @p.to_csv, "bens,the bens,group,<ben1@example.com>\n"
+    end
+
+    should "allow group with only one (named) member" do
+      @p.abook = "bens\tthe bens\t('ben1' <ben1@example.com>)\n"
+      assert_equal @p.to_csv, "bens,the bens,group,ben1 <ben1@example.com>\n"
+    end
+
     should "allow group with single quoted names" do
       @p.abook = "bens\tthe bens\t('ben1' <ben1@example.com>, 'ben2' <ben2@example.com>)\n"
       assert_equal @p.to_csv, "bens,the bens,group,ben1 <ben1@example.com>,ben2 <ben2@example.com>\n"
