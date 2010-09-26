@@ -111,6 +111,16 @@ class TestPine2csv < Test::Unit::TestCase
       assert_equal @p.to_csv, "bens,the bens,group,<ben1@example.com>,<ben2@example.com>\n"
     end
 
+    should "allow groups with fcc values" do
+      @p.abook = "bens\tthe bens\t(ben1@example.com,ben2@example.com)\tfcc\n"
+      assert_equal @p.to_csv, "bens,the bens,group,<ben1@example.com>,<ben2@example.com>\n"
+    end
+
+    should "allow groups with fcc and comment values" do
+      @p.abook = "bens\tthe bens\t(ben1@example.com,ben2@example.com)\tfcc\tcomment\n"
+      assert_equal @p.to_csv, "bens,the bens,group,<ben1@example.com>,<ben2@example.com>\n"
+    end
+
     should "allow group with only one member" do
       @p.abook = "bens\tthe bens\t(ben1@example.com)\n"
       assert_equal @p.to_csv, "bens,the bens,group,<ben1@example.com>\n"
