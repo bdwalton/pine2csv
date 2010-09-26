@@ -275,6 +275,25 @@ class TestPine2csv < Test::Unit::TestCase
         end
       end
     end
+
+    should "reject entries with dangling continuations" do
+      [ "ben\tben\tbwalton@example.org\n   ",
+        "ben\tben\tbwalton@example.org\tfcc\n   ",
+        "ben\tben\tbwalton@example.org\t\n   fcc\n   ",
+      ].each do |bad_cont|
+        @p.abook = bad_cont
+        assert_raise Pine2CSV::Error do
+          @p.to_csv
+        end
+      end
+    end
+
+    should "reject a bad continuation mixed in valid entries" do
+      @p.abook = "ben\tben\tbwalton@example.org\nben2\tben2\n   \nben3\tben3\tben3@example.org\n"
+      assert_raise Pine2CSV::Error do
+        @p.to_csv
+      end
+    end
   end
 
   context "Accept multiple lines" do
