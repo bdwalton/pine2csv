@@ -195,6 +195,12 @@ class TestPine2csv < Test::Unit::TestCase
       @p.abook = "bens\tthe bens\t(\n   'ben1' <ben1@example.com>,\n   ben2@example.com,\n   ben3@example.com)\n"
       assert_equal @p.to_csv, "bens,the bens,group,ben1 <ben1@example.com>,<ben2@example.com>,<ben3@example.com>\n"
     end
+
+    should "allow group with fcc and command mixed in continuations" do
+      @p.abook = "bens\tthe bens\t\n   (bwalton@example.org,\n   ben2@example.org)\t\n   fcc\tcomment\n"
+      assert_equal @p.to_csv, "bens,the bens,group,<bwalton@example.org>,<ben2@example.org>\n"
+    end
+
   end
 
 
