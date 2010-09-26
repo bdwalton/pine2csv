@@ -259,6 +259,18 @@ class TestPine2csv < Test::Unit::TestCase
         end
       end
     end
+
+    should "reject groups with missing brackets" do
+      [ "bens\tthe bens\tben1@example.com,ben2@example.com\n",
+        "bens\tthe bens\t(ben1@example.com,ben2@example.com\n",
+        "bens\tthe bens\tben1@example.com,ben2@example.com)\n"
+      ].each do |missing_bracket|
+        @p.abook = missing_bracket
+        assert_raise Pine2CSV::Error do
+          @p.to_csv
+        end
+      end
+    end
   end
 
   context "Accept multiple lines" do
