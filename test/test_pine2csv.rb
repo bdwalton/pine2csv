@@ -39,6 +39,10 @@ class TestPine2csv < Test::Unit::TestCase
       assert_equal @p.to_csv, "ben,\"\",person,<bwalton@example.org>\n"
     end
 
+
+    should "allow bracketed email recipient with no name" do
+      @p.abook = "ben\tben\t<bwalton@example.com>\n"
+      assert_equal @p.to_csv, "ben,ben,person,<bwalton@example.com>\n"
     end
 
     should "allow an fcc without a comment" do
