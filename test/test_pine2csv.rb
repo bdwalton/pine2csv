@@ -180,8 +180,12 @@ class TestPine2csv < Test::Unit::TestCase
       @p.abook = "bens\tthe bens\t(\n   ben1@example.com,\n   ben2@example.com,\n   ben3@example.com)\n"
       assert_equal @p.to_csv, "bens,the bens,group,<ben1@example.com>,<ben2@example.com>,<ben3@example.com>\n"
     end
-  end
 
+    should "allow continuations in a group list with named recipients" do
+      @p.abook = "bens\tthe bens\t(\n   'ben1' <ben1@example.com>,\n   ben2@example.com,\n   ben3@example.com)\n"
+      assert_equal @p.to_csv, "bens,the bens,group,ben1 <ben1@example.com>,<ben2@example.com>,<ben3@example.com>\n"
+    end
+  end
 
 
   context "Reject invalid entries" do
