@@ -183,6 +183,17 @@ class TestPine2csv < Test::Unit::TestCase
       end
     end
 
+    should "reject recipient with no @ in address" do
+      [ "ben\tben walton\tbwaltonATexample.org\n",
+        "ben\tben walton\t<bwaltonATexample.org>\n"
+      ].each do |bad_address|
+        @p.abook = bad_address
+        assert_raise Pine2CSV::Error do
+          @p.to_csv
+        end
+      end
+    end
+
     should "reject non-escaped quotes in name field" do
       [
        "ben\t'ben o'walton'\tbwalton@example.org\n",
