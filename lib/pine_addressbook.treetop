@@ -76,9 +76,9 @@ grammar PineAddressbook
 	end
 
 	rule qualified_address
-	     recipname [\s]+ emailaddress {
+	     recipname [\s]+ bracketedaddress {
 	     def value
-	     	 ['person', "#{recipname.value} #{emailaddress.value[1]}"]
+		 ['person', "#{recipname.value} #{bracketedaddress.value[1]}"]
 	     end
 	     }
 	end
@@ -105,7 +105,7 @@ grammar PineAddressbook
 	end
 
 	rule brname
-	     (!' <' !eol .)+ {
+	     (!' <' !eol .)+  {
 	     def value; text_value.squeeze("'").squeeze("\""); end
 	     }
 	end
